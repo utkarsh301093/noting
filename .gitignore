@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Xcode per-user state and build output
+xcuserdata/
+DerivedData/
+build/
+.build_cache/
+*.xcuserstate
+
+# Personal build settings (team ID, bundle ID) — see Config/Signing.xcconfig
+Config/Signing.local.xcconfig
+
+# Personal files kept out of the public repo
+_personal-files/
+folio_design/
+*.zip
+create_project.py

@@ -1,0 +1,16 @@
+// Build identity for Folio.
+//
+// You don't have to edit this file: picking your Team in Xcode (Signing & Capabilities) works too.
+// For personal values that should never be committed, create Config/Signing.local.xcconfig
+// (it's git-ignored) and override any of the settings below there.
+
+// Your Apple Developer team (a free Apple ID "Personal Team" works). Empty = choose in Xcode.
+DEVELOPMENT_TEAM =
+
+// Must be unique to you, e.g. com.yourname.folio
+PRODUCT_BUNDLE_IDENTIFIER = com.example.folio
+
+// Folder inside the app's Documents where notes are stored.
+FOLIO_DATA_FOLDER = FolioData
+
+#include? "Signing.local.xcconfig"

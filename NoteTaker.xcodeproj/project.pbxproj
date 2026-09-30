@@ -1,0 +1,362 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0FA048ED92F343188D84B68F /* NoteTaker/Views/Components/ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C26DF1E8BE84BF5B901334F /* NoteTaker/Views/Components/ShareSheet.swift */; };
+		6B2E4D8F0C3E5F7A9B1C2D3E /* NoteTaker/Utils/ShapeSnapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1F3C7E9B2D4E6F8A0B1C2D /* NoteTaker/Utils/ShapeSnapper.swift */; };
+		12B49E3F4EA24F4BAE24D97A /* NoteTaker/Utils/PencilInteractionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88438E3DA892475983DD44C2 /* NoteTaker/Utils/PencilInteractionManager.swift */; };
+		269D5138E19C447F9F4027B6 /* NoteTaker/Views/Dialogs/NewFolderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFD8CACE5B943BA986693DA /* NoteTaker/Views/Dialogs/NewFolderSheet.swift */; };
+		3B97D513E27C43558D89AA58 /* NoteTaker/Views/Canvas/PDFPageBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4A12794CD946508B8964D3 /* NoteTaker/Views/Canvas/PDFPageBackgroundView.swift */; };
+		3CBECABEA47C42E4B68BB223 /* NoteTaker/Views/Main/FolioMainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28874CC10A9E489BA13A75D4 /* NoteTaker/Views/Main/FolioMainContainerView.swift */; };
+		3E4A029001D0473BA5862B0A /* NoteTaker/Views/Canvas/TemplatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C620069089EF4385AC418AC5 /* NoteTaker/Views/Canvas/TemplatePickerSheet.swift */; };
+		46FC3BD2A44A4E7D99B7BB94 /* NoteTaker/Models/NotePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3D5428F7D7442D9E416C73 /* NoteTaker/Models/NotePage.swift */; };
+		473372C33E524975AAC78B2A /* NoteTaker/Services/PDFExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29441A672374715BF3F98D1 /* NoteTaker/Services/PDFExportService.swift */; };
+		4EB73EC7018046FDA864F225 /* NoteTaker/Views/Main/FolioLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9519EC233824ABB8813C89D /* NoteTaker/Views/Main/FolioLibraryView.swift */; };
+		56B2D57D8AFF466FA22AF494 /* NoteTaker/Utils/BrandTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCDAB01F9CC418BA9D73679 /* NoteTaker/Utils/BrandTheme.swift */; };
+		73404F607A9B40BAB3C41D5E /* NoteTaker/Services/ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E80A5CACB8B4DDE8CE1E5D8 /* NoteTaker/Services/ThemeManager.swift */; };
+		792F156FF432448EA3D0FBC4 /* NoteTaker/App/NoteTakerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6899AA9630B74CB2A051698E /* NoteTaker/App/NoteTakerApp.swift */; };
+		7B7CED353D004E909ECD3806 /* NoteTaker/Models/PaperTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC98A8842BE34B6E9F56F105 /* NoteTaker/Models/PaperTemplate.swift */; };
+		867903EB5DC040138F6919EB /* NoteTaker/Views/Canvas/PaperBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECF7CDDAA8D414490F6AD3A /* NoteTaker/Views/Canvas/PaperBackgroundView.swift */; };
+		87BD2DBC95F642ABA45A91C5 /* NoteTaker/Views/Canvas/FolioImmersiveEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE95D133B9F4A8696CFEB47 /* NoteTaker/Views/Canvas/FolioImmersiveEditorView.swift */; };
+		888F4288CE6E4F7FB221053A /* NoteTaker/Views/Canvas/FolioDocumentPropertiesSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE04E66E7A4843AC8B051B7F /* NoteTaker/Views/Canvas/FolioDocumentPropertiesSheet.swift */; };
+		8E46545BCA684D4580590299 /* NoteTaker/Views/Dialogs/NewNotebookSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7ED849C39448DFBDB0E45C /* NoteTaker/Views/Dialogs/NewNotebookSheet.swift */; };
+		8F2191F8828D445DB8C7CB72 /* NoteTaker/Views/Canvas/PageThumbnailsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0533307E5D24E8D8B8BE548 /* NoteTaker/Views/Canvas/PageThumbnailsSheet.swift */; };
+		9FC1C7DCFF924F8BB0C106E2 /* NoteTaker/Views/Canvas/ZoomWritingWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02B769133D4431F95A213C9 /* NoteTaker/Views/Canvas/ZoomWritingWindowView.swift */; };
+		AD5444E1D4A24B1DB82630FE /* NoteTaker/Utils/FolioTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56908A88E37B4FAC877F4367 /* NoteTaker/Utils/FolioTheme.swift */; };
+		B7E5F1A6D1DF47DD88C2F76A /* NoteTaker/Utils/PageGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D768638A08424FAD5D650B /* NoteTaker/Utils/PageGeometry.swift */; };
+		C324F6911372473895092766 /* NoteTaker/Models/Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06184EE2B67D402B977E59C1 /* NoteTaker/Models/Folder.swift */; };
+		C7A0BEB0DD2A4AE89CD8E5E9 /* NoteTaker/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 880C7C26B8F54FC6A21258F4 /* NoteTaker/Assets.xcassets */; };
+		CC3102AEB4A3415C9A497102 /* NoteTaker/Views/Canvas/PencilCanvasContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411212BB86B43E6BD30A2F2 /* NoteTaker/Views/Canvas/PencilCanvasContainer.swift */; };
+		CE1661072B8C4252A0B86785 /* NoteTaker/Services/DocumentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13412BE512974B2DB8E1F3BF /* NoteTaker/Services/DocumentStore.swift */; };
+		D4C50A7E7C5F40D097E858EA /* NoteTaker/Models/NoteDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD191C5DB64BD08F6CFD1A /* NoteTaker/Models/NoteDocument.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7C3D5E9F1A2B4C6D8E0F1A2B /* Config/Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
+		5A1F3C7E9B2D4E6F8A0B1C2D /* NoteTaker/Utils/ShapeSnapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Utils/ShapeSnapper.swift; sourceTree = "<group>"; };
+		06184EE2B67D402B977E59C1 /* NoteTaker/Models/Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Models/Folder.swift; sourceTree = "<group>"; };
+		07FD191C5DB64BD08F6CFD1A /* NoteTaker/Models/NoteDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Models/NoteDocument.swift; sourceTree = "<group>"; };
+		13412BE512974B2DB8E1F3BF /* NoteTaker/Services/DocumentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Services/DocumentStore.swift; sourceTree = "<group>"; };
+		1C26DF1E8BE84BF5B901334F /* NoteTaker/Views/Components/ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Components/ShareSheet.swift; sourceTree = "<group>"; };
+		1ECF7CDDAA8D414490F6AD3A /* NoteTaker/Views/Canvas/PaperBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/PaperBackgroundView.swift; sourceTree = "<group>"; };
+		28874CC10A9E489BA13A75D4 /* NoteTaker/Views/Main/FolioMainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Main/FolioMainContainerView.swift; sourceTree = "<group>"; };
+		4BA4479BDAD84B29A81CE362 /* NoteTaker/Resources/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = NoteTaker/Resources/Info.plist; sourceTree = "<group>"; };
+		4E80A5CACB8B4DDE8CE1E5D8 /* NoteTaker/Services/ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Services/ThemeManager.swift; sourceTree = "<group>"; };
+		56908A88E37B4FAC877F4367 /* NoteTaker/Utils/FolioTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Utils/FolioTheme.swift; sourceTree = "<group>"; };
+		6899AA9630B74CB2A051698E /* NoteTaker/App/NoteTakerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/App/NoteTakerApp.swift; sourceTree = "<group>"; };
+		7D4F1B9CFFFE4E1C9E4D673C /* NoteTaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteTaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DE95D133B9F4A8696CFEB47 /* NoteTaker/Views/Canvas/FolioImmersiveEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/FolioImmersiveEditorView.swift; sourceTree = "<group>"; };
+		880C7C26B8F54FC6A21258F4 /* NoteTaker/Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = NoteTaker/Assets.xcassets; sourceTree = "<group>"; };
+		88438E3DA892475983DD44C2 /* NoteTaker/Utils/PencilInteractionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Utils/PencilInteractionManager.swift; sourceTree = "<group>"; };
+		8AFD8CACE5B943BA986693DA /* NoteTaker/Views/Dialogs/NewFolderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Dialogs/NewFolderSheet.swift; sourceTree = "<group>"; };
+		8B7ED849C39448DFBDB0E45C /* NoteTaker/Views/Dialogs/NewNotebookSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Dialogs/NewNotebookSheet.swift; sourceTree = "<group>"; };
+		A0533307E5D24E8D8B8BE548 /* NoteTaker/Views/Canvas/PageThumbnailsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/PageThumbnailsSheet.swift; sourceTree = "<group>"; };
+		A2D768638A08424FAD5D650B /* NoteTaker/Utils/PageGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Utils/PageGeometry.swift; sourceTree = "<group>"; };
+		AC4A12794CD946508B8964D3 /* NoteTaker/Views/Canvas/PDFPageBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/PDFPageBackgroundView.swift; sourceTree = "<group>"; };
+		B29441A672374715BF3F98D1 /* NoteTaker/Services/PDFExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Services/PDFExportService.swift; sourceTree = "<group>"; };
+		C02B769133D4431F95A213C9 /* NoteTaker/Views/Canvas/ZoomWritingWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/ZoomWritingWindowView.swift; sourceTree = "<group>"; };
+		C411212BB86B43E6BD30A2F2 /* NoteTaker/Views/Canvas/PencilCanvasContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/PencilCanvasContainer.swift; sourceTree = "<group>"; };
+		C620069089EF4385AC418AC5 /* NoteTaker/Views/Canvas/TemplatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/TemplatePickerSheet.swift; sourceTree = "<group>"; };
+		CB3D5428F7D7442D9E416C73 /* NoteTaker/Models/NotePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Models/NotePage.swift; sourceTree = "<group>"; };
+		CE04E66E7A4843AC8B051B7F /* NoteTaker/Views/Canvas/FolioDocumentPropertiesSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Canvas/FolioDocumentPropertiesSheet.swift; sourceTree = "<group>"; };
+		DCCDAB01F9CC418BA9D73679 /* NoteTaker/Utils/BrandTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Utils/BrandTheme.swift; sourceTree = "<group>"; };
+		EC98A8842BE34B6E9F56F105 /* NoteTaker/Models/PaperTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Models/PaperTemplate.swift; sourceTree = "<group>"; };
+		F9519EC233824ABB8813C89D /* NoteTaker/Views/Main/FolioLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTaker/Views/Main/FolioLibraryView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9AC9AA20D60947B2BD89B702 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D594ACF785844B9CBF9286C4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7D4F1B9CFFFE4E1C9E4D673C /* NoteTaker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D9AE4E59FB5849A494DD6208 = {
+			isa = PBXGroup;
+			children = (
+				6899AA9630B74CB2A051698E /* NoteTaker/App/NoteTakerApp.swift */,
+				A2D768638A08424FAD5D650B /* NoteTaker/Utils/PageGeometry.swift */,
+				56908A88E37B4FAC877F4367 /* NoteTaker/Utils/FolioTheme.swift */,
+				DCCDAB01F9CC418BA9D73679 /* NoteTaker/Utils/BrandTheme.swift */,
+				88438E3DA892475983DD44C2 /* NoteTaker/Utils/PencilInteractionManager.swift */,
+				5A1F3C7E9B2D4E6F8A0B1C2D /* NoteTaker/Utils/ShapeSnapper.swift */,
+				06184EE2B67D402B977E59C1 /* NoteTaker/Models/Folder.swift */,
+				07FD191C5DB64BD08F6CFD1A /* NoteTaker/Models/NoteDocument.swift */,
+				EC98A8842BE34B6E9F56F105 /* NoteTaker/Models/PaperTemplate.swift */,
+				CB3D5428F7D7442D9E416C73 /* NoteTaker/Models/NotePage.swift */,
+				AC4A12794CD946508B8964D3 /* NoteTaker/Views/Canvas/PDFPageBackgroundView.swift */,
+				C411212BB86B43E6BD30A2F2 /* NoteTaker/Views/Canvas/PencilCanvasContainer.swift */,
+				7DE95D133B9F4A8696CFEB47 /* NoteTaker/Views/Canvas/FolioImmersiveEditorView.swift */,
+				C620069089EF4385AC418AC5 /* NoteTaker/Views/Canvas/TemplatePickerSheet.swift */,
+				1ECF7CDDAA8D414490F6AD3A /* NoteTaker/Views/Canvas/PaperBackgroundView.swift */,
+				A0533307E5D24E8D8B8BE548 /* NoteTaker/Views/Canvas/PageThumbnailsSheet.swift */,
+				CE04E66E7A4843AC8B051B7F /* NoteTaker/Views/Canvas/FolioDocumentPropertiesSheet.swift */,
+				C02B769133D4431F95A213C9 /* NoteTaker/Views/Canvas/ZoomWritingWindowView.swift */,
+				1C26DF1E8BE84BF5B901334F /* NoteTaker/Views/Components/ShareSheet.swift */,
+				8B7ED849C39448DFBDB0E45C /* NoteTaker/Views/Dialogs/NewNotebookSheet.swift */,
+				8AFD8CACE5B943BA986693DA /* NoteTaker/Views/Dialogs/NewFolderSheet.swift */,
+				28874CC10A9E489BA13A75D4 /* NoteTaker/Views/Main/FolioMainContainerView.swift */,
+				F9519EC233824ABB8813C89D /* NoteTaker/Views/Main/FolioLibraryView.swift */,
+				B29441A672374715BF3F98D1 /* NoteTaker/Services/PDFExportService.swift */,
+				4E80A5CACB8B4DDE8CE1E5D8 /* NoteTaker/Services/ThemeManager.swift */,
+				13412BE512974B2DB8E1F3BF /* NoteTaker/Services/DocumentStore.swift */,
+				880C7C26B8F54FC6A21258F4 /* NoteTaker/Assets.xcassets */,
+				4BA4479BDAD84B29A81CE362 /* NoteTaker/Resources/Info.plist */,
+				7C3D5E9F1A2B4C6D8E0F1A2B /* Config/Signing.xcconfig */,
+				D594ACF785844B9CBF9286C4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ABED066F8554477EBAA2B41E /* NoteTaker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E2DF26CCBA8498389FD0154 /* Build configuration list for PBXNativeTarget "NoteTaker" */;
+			buildPhases = (
+				C3766F39F06E41CCB1D9B1CD /* Sources */,
+				9AC9AA20D60947B2BD89B702 /* Frameworks */,
+				9C46EDE66F664B1C9B915655 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NoteTaker;
+			productName = NoteTaker;
+			productReference = 7D4F1B9CFFFE4E1C9E4D673C /* NoteTaker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CA229DB1709F4FC7B5E26852 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					ABED066F8554477EBAA2B41E = {
+						CreatedOnToolsVersion = 15.0;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 13DA46F7DC8B4A9498F7305E /* Build configuration list for PBXProject "NoteTaker" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D9AE4E59FB5849A494DD6208;
+			productRefGroup = D594ACF785844B9CBF9286C4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ABED066F8554477EBAA2B41E /* NoteTaker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C46EDE66F664B1C9B915655 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A0BEB0DD2A4AE89CD8E5E9 /* NoteTaker/Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C3766F39F06E41CCB1D9B1CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792F156FF432448EA3D0FBC4 /* NoteTaker/App/NoteTakerApp.swift in Sources */,
+				B7E5F1A6D1DF47DD88C2F76A /* NoteTaker/Utils/PageGeometry.swift in Sources */,
+				AD5444E1D4A24B1DB82630FE /* NoteTaker/Utils/FolioTheme.swift in Sources */,
+				56B2D57D8AFF466FA22AF494 /* NoteTaker/Utils/BrandTheme.swift in Sources */,
+				12B49E3F4EA24F4BAE24D97A /* NoteTaker/Utils/PencilInteractionManager.swift in Sources */,
+				6B2E4D8F0C3E5F7A9B1C2D3E /* NoteTaker/Utils/ShapeSnapper.swift in Sources */,
+				C324F6911372473895092766 /* NoteTaker/Models/Folder.swift in Sources */,
+				D4C50A7E7C5F40D097E858EA /* NoteTaker/Models/NoteDocument.swift in Sources */,
+				7B7CED353D004E909ECD3806 /* NoteTaker/Models/PaperTemplate.swift in Sources */,
+				46FC3BD2A44A4E7D99B7BB94 /* NoteTaker/Models/NotePage.swift in Sources */,
+				3B97D513E27C43558D89AA58 /* NoteTaker/Views/Canvas/PDFPageBackgroundView.swift in Sources */,
+				CC3102AEB4A3415C9A497102 /* NoteTaker/Views/Canvas/PencilCanvasContainer.swift in Sources */,
+				87BD2DBC95F642ABA45A91C5 /* NoteTaker/Views/Canvas/FolioImmersiveEditorView.swift in Sources */,
+				3E4A029001D0473BA5862B0A /* NoteTaker/Views/Canvas/TemplatePickerSheet.swift in Sources */,
+				867903EB5DC040138F6919EB /* NoteTaker/Views/Canvas/PaperBackgroundView.swift in Sources */,
+				8F2191F8828D445DB8C7CB72 /* NoteTaker/Views/Canvas/PageThumbnailsSheet.swift in Sources */,
+				888F4288CE6E4F7FB221053A /* NoteTaker/Views/Canvas/FolioDocumentPropertiesSheet.swift in Sources */,
+				9FC1C7DCFF924F8BB0C106E2 /* NoteTaker/Views/Canvas/ZoomWritingWindowView.swift in Sources */,
+				0FA048ED92F343188D84B68F /* NoteTaker/Views/Components/ShareSheet.swift in Sources */,
+				8E46545BCA684D4580590299 /* NoteTaker/Views/Dialogs/NewNotebookSheet.swift in Sources */,
+				269D5138E19C447F9F4027B6 /* NoteTaker/Views/Dialogs/NewFolderSheet.swift in Sources */,
+				3CBECABEA47C42E4B68BB223 /* NoteTaker/Views/Main/FolioMainContainerView.swift in Sources */,
+				4EB73EC7018046FDA864F225 /* NoteTaker/Views/Main/FolioLibraryView.swift in Sources */,
+				473372C33E524975AAC78B2A /* NoteTaker/Services/PDFExportService.swift in Sources */,
+				73404F607A9B40BAB3C41D5E /* NoteTaker/Services/ThemeManager.swift in Sources */,
+				CE1661072B8C4252A0B86785 /* NoteTaker/Services/DocumentStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		93E572BA5C7B4A698D018A73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C3D5E9F1A2B4C6D8E0F1A2B /* Config/Signing.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NoteTaker/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		99F224B84C6B4C248B969A50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C3D5E9F1A2B4C6D8E0F1A2B /* Config/Signing.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NoteTaker/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CFA1052466E7483899C8BCD2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDEFINED_VARIABLES = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F191329DE2694176842293D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDEFINED_VARIABLES = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		13DA46F7DC8B4A9498F7305E /* Build configuration list for PBXProject "NoteTaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFA1052466E7483899C8BCD2 /* Debug */,
+				F191329DE2694176842293D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E2DF26CCBA8498389FD0154 /* Build configuration list for PBXNativeTarget "NoteTaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93E572BA5C7B4A698D018A73 /* Debug */,
+				99F224B84C6B4C248B969A50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CA229DB1709F4FC7B5E26852 /* Project object */;
+}
