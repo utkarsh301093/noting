@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/logo.svg" width="140" alt="Folio logo">
+  <img src="docs/logo.svg" width="140" alt="Noting logo">
 </p>
 
-<h1 align="center">Folio</h1>
+<h1 align="center">Noting</h1>
 
 <p align="center">A free, private, handwriting-first note-taking app for iPad — that you build and own yourself.</p>
 
@@ -16,7 +16,7 @@ So I built my own, for my personal use. And I'd love for you to use it too.
 
 **This app is AI-generated.** I built it by describing what I wanted to an AI coding assistant, testing it on my iPad, and asking for changes until it worked the way I wanted.
 
-That's also why I'm sharing it. I believe traditional SaaS — paying every month for software that someone else controls — is dying. When anyone can have software made for exactly their needs, it makes more sense to own a small app that does what *you* want than to rent a big one that does what everyone wants. **Folio is my experiment with that idea.** Fork it, make it yours, and change it however you like.
+That's also why I'm sharing it. I believe traditional SaaS — paying every month for software that someone else controls — is dying. When anyone can have software made for exactly their needs, it makes more sense to own a small app that does what *you* want than to rent a big one that does what everyone wants. **Noting is my experiment with that idea.** Fork it, make it yours, and change it however you like.
 
 ## What it does
 
@@ -67,7 +67,7 @@ You don't need to know how to code. It takes about 20–30 minutes the first tim
 **4. Make the app yours**
 - In the left sidebar, click the blue **NoteTaker** project icon at the top, then **Signing & Capabilities**.
 - **Team:** choose your name (it will say *Personal Team*).
-- **Bundle Identifier:** change `com.example.folio` to something unique, like `com.yourname.folio`.
+- **Bundle Identifier:** change `com.example.noting` to something unique, like `com.yourname.noting`.
 
 **5. Prepare your iPad**
 - Connect your iPad to your Mac with a cable and tap **Trust** on the iPad if asked.
@@ -79,7 +79,7 @@ You don't need to know how to code. It takes about 20–30 minutes the first tim
 - Press the **▶ Run** button (or **⌘R**). The first build takes a few minutes.
 - The first time, your iPad will block the app: go to **Settings → General → VPN & Device Management**, tap your Apple ID, and tap **Trust**. Then press Run again.
 
-Folio is now on your Home Screen. 🎉
+Noting is now on your Home Screen. 🎉
 
 ### Changing things
 

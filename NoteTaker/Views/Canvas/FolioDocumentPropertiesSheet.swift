@@ -232,7 +232,7 @@ public struct FolioDocumentPropertiesSheet: View {
                 Group {
                     AttributeRow(title: "Pages", value: "\(doc.pages.count) Pages", isDark: isDark)
                     Divider().background(FolioTheme.divider(isDark: isDark))
-                    AttributeRow(title: "Format", value: doc.type == .pdfDocument ? "Annotated PDF" : "Folio Vector Notebook", isDark: isDark)
+                    AttributeRow(title: "Format", value: doc.type == .pdfDocument ? "Annotated PDF" : "Handwritten Notebook", isDark: isDark)
                     Divider().background(FolioTheme.divider(isDark: isDark))
                     AttributeRow(title: "Template", value: doc.defaultTemplate.displayName, isDark: isDark)
                     Divider().background(FolioTheme.divider(isDark: isDark))

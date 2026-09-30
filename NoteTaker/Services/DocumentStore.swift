@@ -34,9 +34,9 @@ public final class DocumentStore: ObservableObject {
 
     public init() {
         let paths = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-        // Folder name can be overridden per build (FOLIO_DATA_FOLDER in Config/Signing.xcconfig).
-        let folderName = (Bundle.main.object(forInfoDictionaryKey: "FolioDataFolder") as? String)
-            .flatMap { $0.isEmpty ? nil : $0 } ?? "FolioData"
+        // Folder name can be overridden per build (NOTING_DATA_FOLDER in Config/Signing.xcconfig).
+        let folderName = (Bundle.main.object(forInfoDictionaryKey: "NotingDataFolder") as? String)
+            .flatMap { $0.isEmpty ? nil : $0 } ?? "NotingData"
         let root = paths.first!.appendingPathComponent(folderName, isDirectory: true)
         self.appSupportURL = root
         self.drawingsDirectoryURL = root.appendingPathComponent("Drawings", isDirectory: true)

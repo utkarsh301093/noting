@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Folio</string>
-	<key>FolioDataFolder</key>
-	<string>$(FOLIO_DATA_FOLDER)</string>
+	<string>Noting</string>
+	<key>NotingDataFolder</key>
+	<string>$(NOTING_DATA_FOLDER)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

@@ -1,4 +1,4 @@
-// Build identity for Folio.
+// Build identity for Noting.
 //
 // You don't have to edit this file: picking your Team in Xcode (Signing & Capabilities) works too.
 // For personal values that should never be committed, create Config/Signing.local.xcconfig
@@ -7,10 +7,10 @@
 // Your Apple Developer team (a free Apple ID "Personal Team" works). Empty = choose in Xcode.
 DEVELOPMENT_TEAM =
 
-// Must be unique to you, e.g. com.yourname.folio
-PRODUCT_BUNDLE_IDENTIFIER = com.example.folio
+// Must be unique to you, e.g. com.yourname.noting
+PRODUCT_BUNDLE_IDENTIFIER = com.example.noting
 
 // Folder inside the app's Documents where notes are stored.
-FOLIO_DATA_FOLDER = FolioData
+NOTING_DATA_FOLDER = NotingData
 
 #include? "Signing.local.xcconfig"
