@@ -4,54 +4,121 @@ import PencilKit
 /// State for the GoodNotes-style Zoom Window: which region of the page is magnified, and how much.
 /// All geometry is in the page's logical coordinates (see `PageGeometry`).
 public final class ZoomWindowState: ObservableObject {
+    private static let magnificationKey = "folio.zoomMagnification"
+    public static let maxMagnification: CGFloat = 6
+
     @Published public var isVisible: Bool = false
     /// Top-left corner of the magnified region on the page.
     @Published public var origin: CGPoint = CGPoint(x: 80, y: 120)
-    /// Size of the magnified region; follows from the dock's size and the magnification.
-    @Published public var regionSize: CGSize = CGSize(width: 260, height: 90)
-    @Published public var magnification: CGFloat = 2.8
+    /// How much the dock enlarges the region. The region's size follows from this and the dock's size.
+    @Published public private(set) var magnification: CGFloat
+    /// On-screen size of the dock's writing area, reported by the dock.
+    @Published public var dockSize: CGSize = CGSize(width: 900, height: 250) {
+        didSet { setMagnification(magnification) }
+    }
     @Published public var autoAdvanceTriggered: Bool = false
+    /// Bumped whenever the region jumps by navigation (not by dragging), so the page can scroll to follow it.
+    @Published public private(set) var navigationCount: Int = 0
     /// Logical size of the page being written on, used to keep the region on the page.
     @Published public var pageSize: CGSize = PageGeometry.notebookSize {
-        didSet { clamp() }
+        didSet { setMagnification(magnification) }
     }
+    /// Where a new line starts: the ruled margin on notebook pages, the page edge on PDFs.
+    public var leftMarginX: CGFloat = 80
 
-    public let leftMarginX: CGFloat = 80
+    public var regionSize: CGSize {
+        CGSize(width: dockSize.width / magnification, height: dockSize.height / magnification)
+    }
 
     public var targetRect: CGRect {
         CGRect(origin: origin, size: regionSize)
     }
 
-    public init() {}
+    public init() {
+        let saved = CGFloat(UserDefaults.standard.double(forKey: Self.magnificationKey))
+        magnification = saved > 0 ? saved : 2.8
+    }
+
+    /// Smallest magnification that still keeps the region on the page.
+    private var minMagnification: CGFloat {
+        max(1.2, dockSize.width / max(pageSize.width, 1), dockSize.height / max(pageSize.height, 1))
+    }
+
+    public func setMagnification(_ value: CGFloat) {
+        let clamped = min(max(value, minMagnification), Self.maxMagnification)
+        if clamped != magnification {
+            magnification = clamped
+            UserDefaults.standard.set(Double(clamped), forKey: Self.magnificationKey)
+        }
+        clamp()
+    }
+
+    /// Resize the region on the page (keeping its top-left corner); the dock's magnification follows.
+    public func resizeRegion(toWidth width: CGFloat) {
+        setMagnification(dockSize.width / max(width, 1))
+    }
 
     public func move(to point: CGPoint) {
         origin = point
         clamp()
     }
 
+    /// Put the region at the start of the line nearest `y`.
+    public func moveToLine(near y: CGFloat, lineHeight: CGFloat) {
+        let snapped = (y / lineHeight).rounded() * lineHeight
+        navigate(to: CGPoint(x: leftMarginX, y: snapped))
+    }
+
+    /// Put the region at the start of the page's first line.
+    public func moveToPageStart(lineHeight: CGFloat) {
+        navigate(to: CGPoint(x: leftMarginX, y: lineHeight))
+    }
+
+    private func navigate(to point: CGPoint) {
+        move(to: point)
+        navigationCount += 1
+    }
+
+    private var isAtLineEnd: Bool { origin.x + regionSize.width >= pageSize.width - 1 }
+    private var isAtLineStart: Bool { origin.x <= leftMarginX + 1 }
+    private var isAtPageBottom: Bool { origin.y >= pageSize.height - regionSize.height - 1 }
+
     /// Step right along the line; at the end of the line, wrap to the next one.
-    public func advanceRight(lineHeight: CGFloat) {
-        if origin.x + regionSize.width >= pageSize.width - 1 {
-            nextLine(lineHeight: lineHeight)
-        } else {
-            move(to: CGPoint(x: origin.x + regionSize.width * 0.75, y: origin.y))
+    /// Returns false when there's no room left on this page.
+    @discardableResult
+    public func advanceRight(lineHeight: CGFloat) -> Bool {
+        autoAdvanceTriggered = false
+        if isAtLineEnd {
+            return nextLine(lineHeight: lineHeight)
         }
-        autoAdvanceTriggered = false
+        navigate(to: CGPoint(x: origin.x + regionSize.width * 0.75, y: origin.y))
+        return true
     }
 
-    public func advanceLeft() {
-        move(to: CGPoint(x: max(leftMarginX, origin.x - regionSize.width * 0.75), y: origin.y))
+    /// Step left along the line; at the start of the line, go back to the end of the previous one.
+    public func advanceLeft(lineHeight: CGFloat) {
         autoAdvanceTriggered = false
+        if isAtLineStart {
+            guard origin.y - lineHeight >= 0 else { return }
+            navigate(to: CGPoint(x: pageSize.width, y: origin.y - lineHeight))
+        } else {
+            navigate(to: CGPoint(x: max(leftMarginX, origin.x - regionSize.width * 0.75), y: origin.y))
+        }
     }
 
-    public func nextLine(lineHeight: CGFloat) {
-        move(to: CGPoint(x: leftMarginX, y: origin.y + lineHeight))
+    /// Returns false when there's no room left on this page.
+    @discardableResult
+    public func nextLine(lineHeight: CGFloat) -> Bool {
         autoAdvanceTriggered = false
+        guard !isAtPageBottom else { return false }
+        navigate(to: CGPoint(x: leftMarginX, y: origin.y + lineHeight))
+        return true
     }
 
     private func clamp() {
-        let maxX = max(0, pageSize.width - regionSize.width)
-        let maxY = max(0, pageSize.height - regionSize.height)
+        let size = regionSize
+        let maxX = max(0, pageSize.width - size.width)
+        let maxY = max(0, pageSize.height - size.height)
         let clamped = CGPoint(x: min(max(0, origin.x), maxX), y: min(max(0, origin.y), maxY))
         if clamped != origin {
             origin = clamped
@@ -75,6 +142,8 @@ public struct ZoomWritingWindowView: View {
     let isDark: Bool
     let controller: CanvasController
     let onDrawingChanged: (PKDrawing) -> Void
+    /// Called when Right / Next Line runs out of room on this page.
+    let onReachPageEnd: () -> Void
 
     @State private var knownStrokeCount: Int = 0
     @State private var autoAdvanceWork: DispatchWorkItem?
@@ -138,9 +207,8 @@ public struct ZoomWritingWindowView: View {
                 }
                 .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
                 .clipped()
-                .onAppear { updateRegionSize(for: geo.size) }
-                .onChange(of: geo.size) { updateRegionSize(for: geo.size) }
-                .onChange(of: state.magnification) { updateRegionSize(for: geo.size) }
+                .onAppear { state.dockSize = geo.size }
+                .onChange(of: geo.size) { state.dockSize = geo.size }
             }
             .frame(height: 250)
         }
@@ -165,41 +233,32 @@ public struct ZoomWritingWindowView: View {
                     .foregroundColor(FolioTheme.text(isDark: isDark))
             }
 
-            // Magnification
-            HStack(spacing: 4) {
-                ForEach([2.0, 2.8, 3.5], id: \.self) { (scale: CGFloat) in
-                    Button {
-                        withAnimation(.spring(response: 0.3)) {
-                            state.magnification = scale
-                        }
-                    } label: {
-                        Text(String(format: "%.1f×", scale))
-                            .font(.system(size: 13, weight: .medium))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(state.magnification == scale ? FolioTheme.accent(isDark: isDark) : Color.clear)
-                            .foregroundColor(state.magnification == scale ? .white : FolioTheme.textSecondary(isDark: isDark))
-                            .cornerRadius(6)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-            }
-            .background(FolioTheme.divider(isDark: isDark).opacity(0.5))
-            .cornerRadius(8)
+            // Magnification is set by resizing the box on the page; this just reports it.
+            Text(String(format: "%.1f×", state.magnification))
+                .font(.system(size: 13, weight: .medium).monospacedDigit())
+                .foregroundColor(FolioTheme.textSecondary(isDark: isDark))
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(FolioTheme.divider(isDark: isDark).opacity(0.5))
+                .cornerRadius(6)
+                .accessibilityLabel(String(format: "Magnification %.1f times. Drag the corner of the box on the page to change it.", state.magnification))
 
             Spacer()
 
             HStack(spacing: 12) {
                 roundButton("chevron.left", label: "Move left") {
-                    state.advanceLeft()
+                    state.advanceLeft(lineHeight: templateType.lineHeight)
                 }
                 roundButton("chevron.right", label: "Move right") {
-                    state.advanceRight(lineHeight: templateType.lineHeight)
+                    moveRight()
                 }
 
                 Button {
+                    autoAdvanceWork?.cancel()
                     withAnimation(.spring(response: 0.3)) {
-                        state.nextLine(lineHeight: templateType.lineHeight)
+                        if !state.nextLine(lineHeight: templateType.lineHeight) {
+                            onReachPageEnd()
+                        }
                     }
                 } label: {
                     HStack(spacing: 4) {
@@ -243,12 +302,10 @@ public struct ZoomWritingWindowView: View {
         .accessibilityLabel(label)
     }
 
-    private func updateRegionSize(for size: CGSize) {
-        let m = max(state.magnification, 0.1)
-        let region = CGSize(width: size.width / m, height: size.height / m)
-        if region != state.regionSize {
-            state.regionSize = region
-            state.move(to: state.origin) // keep it on the page
+    private func moveRight() {
+        autoAdvanceWork?.cancel()
+        if !state.advanceRight(lineHeight: templateType.lineHeight) {
+            onReachPageEnd()
         }
     }
 
@@ -263,7 +320,7 @@ public struct ZoomWritingWindowView: View {
         autoAdvanceWork?.cancel()
         let work = DispatchWorkItem {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                state.advanceRight(lineHeight: templateType.lineHeight)
+                moveRight()
             }
         }
         autoAdvanceWork = work
@@ -301,10 +358,15 @@ struct AutoAdvanceZoneOverlay: View {
 
 // MARK: - Target Box Overlay on Main Canvas
 
-/// Draggable frame on the page showing which region the Zoom Window is magnifying.
+/// Draggable frame on the page showing which region the Zoom Window is magnifying. The corner
+/// handle (like an iPadOS window's) resizes the region, which sets the dock's magnification.
 public struct TargetBoxOverlay: View {
     @ObservedObject public var state: ZoomWindowState
     let isDark: Bool
+
+    @State private var dragStartOrigin: CGPoint?
+    @State private var resizeStartWidth: CGFloat?
+    @State private var isResizing = false
 
     public init(state: ZoomWindowState, isDark: Bool) {
         self.state = state
@@ -323,11 +385,14 @@ public struct TargetBoxOverlay: View {
                 .gesture(
                     DragGesture()
                         .onChanged { value in
+                            let start = dragStartOrigin ?? state.origin
+                            dragStartOrigin = start
                             state.move(to: CGPoint(
-                                x: value.location.x - state.regionSize.width / 2,
-                                y: value.location.y - state.regionSize.height / 2
+                                x: start.x + value.translation.width,
+                                y: start.y + value.translation.height
                             ))
                         }
+                        .onEnded { _ in dragStartOrigin = nil }
                 )
 
             Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
@@ -338,6 +403,50 @@ public struct TargetBoxOverlay: View {
                 .clipShape(Circle())
                 .position(x: rect.maxX - 10, y: rect.minY + 10)
                 .allowsHitTesting(false)
+
+            if isResizing {
+                Text(String(format: "%.1f×", state.magnification))
+                    .font(.system(size: 12, weight: .semibold).monospacedDigit())
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Capsule().fill(accent))
+                    .position(x: rect.midX, y: rect.midY)
+                    .allowsHitTesting(false)
+            }
+
+            resizeHandle(accent: accent)
+                .position(x: rect.maxX, y: rect.maxY)
+                .gesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { value in
+                            let startWidth = resizeStartWidth ?? state.regionSize.width
+                            resizeStartWidth = startWidth
+                            isResizing = true
+                            // Follow whichever direction the finger moves further; the box keeps the dock's shape.
+                            let aspect = state.dockSize.width / max(state.dockSize.height, 1)
+                            let dx = value.translation.width
+                            let dy = value.translation.height * aspect
+                            state.resizeRegion(toWidth: startWidth + (abs(dx) >= abs(dy) ? dx : dy))
+                        }
+                        .onEnded { _ in
+                            resizeStartWidth = nil
+                            withAnimation(.easeOut(duration: 0.2)) { isResizing = false }
+                        }
+                )
+                .accessibilityLabel("Resize zoom region")
         }
+    }
+
+    /// A rounded corner bracket hugging the box's bottom-right corner, with a larger touch target.
+    private func resizeHandle(accent: Color) -> some View {
+        // The frame is centred on the corner (20, 20); the bracket sits just outside it.
+        Path { path in
+            path.move(to: CGPoint(x: 25, y: 4))
+            path.addQuadCurve(to: CGPoint(x: 4, y: 25), control: CGPoint(x: 25, y: 25))
+        }
+        .stroke(accent.opacity(isResizing ? 1 : 0.85), style: StrokeStyle(lineWidth: isResizing ? 6 : 5, lineCap: .round))
+        .frame(width: 40, height: 40)
+        .contentShape(Rectangle())
     }
 }

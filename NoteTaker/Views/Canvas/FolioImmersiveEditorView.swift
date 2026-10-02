@@ -44,6 +44,8 @@ public struct FolioImmersiveEditorView: View {
     // Zoom Window State (Mockup 1d handwriting dock)
     @StateObject private var zoomState = ZoomWindowState()
     @State private var activeZoomDrawing: PKDrawing = PKDrawing()
+    /// Where pages currently sit in the scroll viewport; read when placing the zoom region.
+    @State private var pageFrames = PageFrameTracker()
 
     private var isDark: Bool { theme.isDarkMode }
 
@@ -141,7 +143,8 @@ public struct FolioImmersiveEditorView: View {
                             onDrawingChanged: { updated in
                                 // Same drawing as the page: save it and let the page canvas pick it up live.
                                 store.saveDrawing(updated, for: targetPage, notifyCanvases: true)
-                            }
+                            },
+                            onReachPageEnd: continueZoomOnNextPage
                         )
                         .id(targetPage.id)
                         .padding(.horizontal, 20)
@@ -167,7 +170,8 @@ public struct FolioImmersiveEditorView: View {
             }
         }
         .onChange(of: scrolledPageId) {
-            if let id = scrolledPageId {
+            // While zooming, the zoom region decides the page; scrolling to follow it mustn't move it.
+            if !zoomState.isVisible, let id = scrolledPageId {
                 activePageId = id
             }
         }
@@ -175,7 +179,9 @@ public struct FolioImmersiveEditorView: View {
             refreshZoomTarget()
         }
         .onChange(of: zoomState.isVisible) {
-            refreshZoomTarget()
+            if zoomState.isVisible {
+                placeZoomInViewport()
+            }
         }
         .sheet(isPresented: $showDocumentProperties) {
             if let doc = document {
@@ -256,6 +262,7 @@ public struct FolioImmersiveEditorView: View {
             let availableWidth = max(320, geo.size.width - horizontalPadding * 2 - marginGap)
             let scale = availableWidth / logicalWidth
 
+            ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 0) {
                     LazyVStack(spacing: 24) {
@@ -280,6 +287,14 @@ public struct FolioImmersiveEditorView: View {
                                     if zoomState.isVisible && page.id == activePage?.id {
                                         activeZoomDrawing = saved
                                     }
+                                }
+                            )
+                            .background(
+                                GeometryReader { cardGeo in
+                                    Color.clear.preference(
+                                        key: PageFramesPreferenceKey.self,
+                                        value: [page.id: cardGeo.frame(in: .named(Self.scrollSpace))]
+                                    )
                                 }
                             )
                             .id(page.id)
@@ -318,6 +333,16 @@ public struct FolioImmersiveEditorView: View {
                 .padding(.top, isChromeVisible ? 80 : 16)
             }
             .scrollPosition(id: $scrolledPageId, anchor: .top)
+            .coordinateSpace(.named(Self.scrollSpace))
+            .onPreferenceChange(PageFramesPreferenceKey.self) { frames in
+                pageFrames.frames = frames
+            }
+            .onChange(of: scale, initial: true) { pageFrames.scale = scale }
+            .onChange(of: geo.size.height, initial: true) { pageFrames.viewportHeight = geo.size.height }
+            .onChange(of: zoomState.navigationCount) {
+                scrollToZoomRegion(proxy: proxy, retryIfOffscreen: true)
+            }
+            }
         }
         .background(FolioTheme.surface(isDark: isDark))
     }
@@ -568,13 +593,110 @@ public struct FolioImmersiveEditorView: View {
     }
 
     private func refreshZoomTarget() {
-        guard zoomState.isVisible, let doc = document, let page = activePage else { return }
+        guard zoomState.isVisible, let page = activePage else { return }
+        refreshZoomTarget(for: page)
+    }
+
+    private func refreshZoomTarget(for page: NotePage) {
+        guard let doc = document else { return }
         activeZoomDrawing = store.loadDrawing(for: page)
         if let pdfName = doc.pdfFileName, let pdfIdx = page.pdfPageIndex {
             let pdfDoc = PDFPageBackgroundView.cachedDocument(for: store.pdfURL(for: pdfName))
             zoomState.pageSize = PageGeometry.logicalSize(for: pdfDoc?.page(at: pdfIdx))
+            zoomState.leftMarginX = 0
         } else {
             zoomState.pageSize = PageGeometry.notebookSize
+            zoomState.leftMarginX = 80
+        }
+    }
+
+    private static let scrollSpace = "folioPageScroll"
+
+    private func zoomLineHeight(for page: NotePage) -> CGFloat {
+        page.pdfPageIndex == nil ? page.templateType.lineHeight : PaperTemplateType.blank.lineHeight
+    }
+
+    /// Screen band (in scroll-viewport coordinates) not covered by the top chrome or the zoom dock.
+    private var zoomVisibleBand: ClosedRange<CGFloat> {
+        let top: CGFloat = isChromeVisible ? 80 : 16
+        let dockTop = pageFrames.viewportHeight - (zoomState.dockSize.height + 64)
+        return top...max(top + 1, dockTop)
+    }
+
+    /// Open the zoom region on the page you're looking at, a little below the top of the visible area.
+    private func placeZoomInViewport() {
+        guard let doc = document else { return }
+        let band = zoomVisibleBand
+        let anchorY = band.lowerBound + (band.upperBound - band.lowerBound) * 0.3
+        let visible = doc.pages.compactMap { page in pageFrames.frames[page.id].map { (page, $0) } }
+        let target = visible.first { $0.1.minY <= anchorY && $0.1.maxY >= anchorY }
+            ?? visible.max { a, b in
+                let overlapA = min(a.1.maxY, band.upperBound) - max(a.1.minY, band.lowerBound)
+                let overlapB = min(b.1.maxY, band.upperBound) - max(b.1.minY, band.lowerBound)
+                return overlapA < overlapB
+            }
+
+        guard let (page, frame) = target else {
+            refreshZoomTarget()
+            return
+        }
+        activePageId = page.id
+        refreshZoomTarget(for: page)
+        let scale = max(pageFrames.scale, 0.01)
+        let pageY = (anchorY - frame.minY) / scale - zoomState.regionSize.height / 2
+        zoomState.moveToLine(near: pageY, lineHeight: zoomLineHeight(for: page))
+    }
+
+    /// Right / Next Line ran off the bottom of the page: carry on at the top of the next one,
+    /// adding a page at the end of a notebook.
+    private func continueZoomOnNextPage() {
+        guard let doc = document, let page = activePage,
+              let idx = doc.pages.firstIndex(where: { $0.id == page.id }) else { return }
+        if idx + 1 < doc.pages.count {
+            let next = doc.pages[idx + 1]
+            activePageId = next.id
+            refreshZoomTarget(for: next)
+            zoomState.moveToPageStart(lineHeight: zoomLineHeight(for: next))
+        } else if page.pdfPageIndex == nil {
+            addNewPage(atEnd: true)
+            if let next = store.documents.first(where: { $0.id == doc.id })?.pages.last {
+                refreshZoomTarget(for: next)
+                zoomState.moveToPageStart(lineHeight: zoomLineHeight(for: next))
+            }
+        }
+    }
+
+    /// Scroll just enough to keep the zoom region between the top chrome and the dock.
+    private func scrollToZoomRegion(proxy: ScrollViewProxy, retryIfOffscreen: Bool) {
+        guard zoomState.isVisible, let page = activePage else { return }
+        guard let frame = pageFrames.frames[page.id] else {
+            // The page isn't laid out yet (e.g. just added): bring it in, then fine-tune.
+            withAnimation(.easeInOut(duration: 0.3)) { proxy.scrollTo(page.id, anchor: .top) }
+            if retryIfOffscreen {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    scrollToZoomRegion(proxy: proxy, retryIfOffscreen: false)
+                }
+            }
+            return
+        }
+        let scale = pageFrames.scale
+        let band = zoomVisibleBand
+        let regionTop = frame.minY + zoomState.origin.y * scale
+        let regionBottom = regionTop + zoomState.regionSize.height * scale
+        guard regionTop < band.lowerBound + 8 || regionBottom > band.upperBound - 8 else { return }
+
+        // scrollTo(anchor:) lines up the same fraction of the page and the viewport, so pick the
+        // fraction that puts the region's top at the desired spot.
+        let desiredTop = band.lowerBound + (band.upperBound - band.lowerBound) * 0.3
+        let viewport = pageFrames.viewportHeight
+        let fraction: CGFloat
+        if abs(frame.height - viewport) < 1 {
+            fraction = 0
+        } else {
+            fraction = (zoomState.origin.y * scale - desiredTop) / (frame.height - viewport)
+        }
+        withAnimation(.easeInOut(duration: 0.3)) {
+            proxy.scrollTo(page.id, anchor: UnitPoint(x: 0.5, y: min(max(fraction, 0), 1)))
         }
     }
 
@@ -600,6 +722,23 @@ public struct FolioImmersiveEditorView: View {
         }
     }
 
+}
+
+// MARK: - Page frame tracking
+
+/// Frames of the laid-out pages in the scroll viewport. A plain reference type so scrolling
+/// doesn't re-render the editor; it's only read when the zoom region needs placing.
+final class PageFrameTracker {
+    var frames: [UUID: CGRect] = [:]
+    var scale: CGFloat = 1
+    var viewportHeight: CGFloat = 0
+}
+
+struct PageFramesPreferenceKey: PreferenceKey {
+    static var defaultValue: [UUID: CGRect] = [:]
+    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
+        value.merge(nextValue()) { $1 }
+    }
 }
 
 // MARK: - Folio Continuous Page Canvas Card
