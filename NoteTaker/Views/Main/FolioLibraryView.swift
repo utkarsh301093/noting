@@ -13,7 +13,7 @@ public struct FolioLibraryView: View {
     @Binding public var activeDocumentId: UUID?
 
     // Navigation & display
-    @State private var sidebarSelection: SidebarSelection = .home
+    @Binding private var sidebarSelection: SidebarSelection
     @State private var sortOrder: LibrarySortOrder = .lastModified
 
     // Creation
@@ -155,8 +155,9 @@ public struct FolioLibraryView: View {
         )
     }
 
-    public init(activeDocumentId: Binding<UUID?>) {
+    public init(activeDocumentId: Binding<UUID?>, sidebarSelection: Binding<SidebarSelection>) {
         self._activeDocumentId = activeDocumentId
+        self._sidebarSelection = sidebarSelection
     }
 
     public var body: some View {

@@ -6,6 +6,9 @@ import SwiftUI
 public struct FolioMainContainerView: View {
     @StateObject private var theme = ThemeManager.shared
     @State private var activeDocumentId: UUID? = nil
+    /// Kept here (not in the library) so closing a document returns to the folder, Recents,
+    /// Favorites or search the user opened it from; the library view is rebuilt each time.
+    @State private var librarySelection: SidebarSelection = .home
     
     public init() {}
     
@@ -26,7 +29,7 @@ public struct FolioMainContainerView: View {
                 .id(docId) // fresh editor state (scroll position, zoom target) per document
                 .transition(.opacity)
             } else {
-                FolioLibraryView(activeDocumentId: $activeDocumentId)
+                FolioLibraryView(activeDocumentId: $activeDocumentId, sidebarSelection: $librarySelection)
                     .transition(.opacity)
             }
         }
